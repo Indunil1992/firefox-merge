@@ -1,0 +1,103 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "06f49964-6776-4edc-a04a-b88bcf9a492c": {
+        "id": "06f49964-6776-4edc-a04a-b88bcf9a492c",
+        "parent": null,
+        "name": "firefox-merge",
+        "type": "DIRECTORY",
+        "isDirectory": true,
+        "children": [
+          "4503ebfb-0867-4e90-8572-11dd069a4cc5"
+        ],
+        "isRemovable": false,
+        "filePath": "firefox-merge"
+      },
+      "4503ebfb-0867-4e90-8572-11dd069a4cc5": {
+        "id": "4503ebfb-0867-4e90-8572-11dd069a4cc5",
+        "parent": "06f49964-6776-4edc-a04a-b88bcf9a492c",
+        "name": "lambda.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "firefox-merge/lambda.js",
+        "code": "exports.handler = function(event, context, callback) {\n\n\n    \n    callback(null, {\"message\": \"Successfully executed merge\"});\n}",
+        "config": {
+          "runtime": "nodejs8.10",
+          "handler": "handler",
+          "timeout": 60,
+          "memory": 128,
+          "layers": []
+        },
+        "triggers": [
+          {
+            "resourceName": "apigusEast1testindunilmergetestinduany",
+            "config": {}
+          }
+        ]
+      }
+    },
+    "deletedFiles": [],
+    "rootNode": "06f49964-6776-4edc-a04a-b88bcf9a492c",
+    "openFiles": [
+      "4503ebfb-0867-4e90-8572-11dd069a4cc5"
+    ],
+    "currentFileId": "4503ebfb-0867-4e90-8572-11dd069a4cc5",
+    "resources": {
+      "apigusEast1testindunilmergetestinduany": {
+        "name": "apigusEast1testindunilmergetestinduany",
+        "type": "API_GATEWAY",
+        "config": {
+          "selectedRegion": "us-east-1",
+          "apiMode": 0,
+          "apiName": "testindunilmerge",
+          "endpointType": "REGIONAL",
+          "resourceMode": 0,
+          "resourceName": "test/indu",
+          "resourcePath": "/test/indu",
+          "restMethod": "ANY",
+          "proxyIntegration": false,
+          "enableCORS": false,
+          "stageMode": 0,
+          "stageName": "test",
+          "mode": 0
+        }
+      }
+    },
+    "customTemplate": {
+      "dialect": null,
+      "definitions": {}
+    },
+    "envVariables": [
+      {
+        "lambdaId": "all",
+        "varKey": "SIGMA_AWS_ACC_ID",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": false
+      }
+    ],
+    "packageJSON": {
+      "dependencies": {}
+    }
+  },
+  "PROJECT_META": {
+    "projectName": "firefox-merge",
+    "projectDescription": "merge",
+    "projectVersion": "1.0.0",
+    "projectRegion": "us-east-1",
+    "platform": "AWS",
+    "platformRegions": {},
+    "lastSave": 1564050457467
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "firefox-merge",
+      "url": "https://github.com/Indunil1992/firefox-merge",
+      "branches": []
+    }
+  }
+}
