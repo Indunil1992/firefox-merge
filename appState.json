@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "firefox-merge/lambda.js",
-        "code": "exports.handler = function(event, context, callback) {\n\n\n    \n    callback(null, {\"message\": \"Successfully executed merge\"});\n}",
+        "code": "let AWS = require('aws-sdk');\nconst s3 = new AWS.S3();\n\nexports.handler = function (event, context, callback) {\n\n    s3.listObjects({\n        'Bucket': 'indunil1',\n        'MaxKeys': 10,\n        'Prefix': '100'\n    }).promise()\n        .then(data => {\n            console.log(data);           // successful response\n            /*\n            data = {\n                Contents: [\n                    {\n                       ETag: \"\\\"70ee1738b6b21e2c8a43f3a5ab0eee71\\\"\",\n                       Key: \"example1.jpg\",\n                       LastModified: \"<Date Representation>\",\n                       Owner: {\n                          DisplayName: \"myname\",\n                          ID: \"12345example25102679df27bb0ae12b3f85be6f290b936c4393484be31bebcc\"\n                       },\n                       Size: 11,\n                       StorageClass: \"STANDARD\"\n                    },\n                    // {...}\n                ]\n            }\n            */\n        })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n\n    callback(null, { \"message\": \"Successfully executed merge\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -35,7 +35,15 @@
             "resourceName": "apigusEast1testindunilmergetestinduany",
             "config": {}
           }
-        ]
+        ],
+        "testCases": {
+          "fa4a9d9a-ba1c-4d9d-a39e-5d850d2ef981": {
+            "id": "fa4a9d9a-ba1c-4d9d-a39e-5d850d2ef981",
+            "name": "Unnamed event",
+            "functionId": "4503ebfb-0867-4e90-8572-11dd069a4cc5",
+            "event": "{\n    \"key1\": \"value1\",\n    \"key2\": \"value2\",\n    \"key3\": \"value3\"\n}"
+          }
+        }
       }
     },
     "deletedFiles": [],
@@ -63,6 +71,17 @@
           "stageName": "test",
           "mode": 0
         }
+      },
+      "s3indunil1": {
+        "name": "s3indunil1",
+        "type": "S3",
+        "config": {
+          "mode": 1,
+          "bucket": {
+            "region": "us-east-1",
+            "name": "indunil1"
+          }
+        }
       }
     },
     "customTemplate": {
@@ -80,7 +99,15 @@
       }
     ],
     "packageJSON": {
-      "dependencies": {}
+      "dependencies": {
+        "aws-sdk": {
+          "name": "aws-sdk",
+          "language": "javascript",
+          "version": "2.176.0",
+          "dev": true,
+          "notRemovable": false
+        }
+      }
     }
   },
   "PROJECT_META": {
@@ -90,14 +117,19 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1564050457467
+    "lastSave": 1564050605739
   },
   "VCS_STATE": {
     "provider": "GitHub",
     "repo": {
       "name": "firefox-merge",
       "url": "https://github.com/Indunil1992/firefox-merge",
-      "branches": []
+      "branches": [
+        {
+          "name": "master",
+          "hash": "cc47fbbe0ecb09d99a59677b5b06f16653bdfae1"
+        }
+      ]
     }
   }
 }
