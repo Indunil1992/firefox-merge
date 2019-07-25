@@ -1,0 +1,2 @@
+# firefox-merge
+merge
