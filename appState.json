@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "firefox-merge/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nconst s3 = new AWS.S3();\n\nexports.handler = function (event, context, callback) {\n\n    s3.listObjects({\n        'Bucket': 'indunil1',\n        'MaxKeys': 10,\n        'Prefix': '100'\n    }).promise()\n        .then(data => {\n            console.log(data);           // successful response\n            /*\n            data = {\n                Contents: [\n                    {\n                       ETag: \"\\\"70ee1738b6b21e2c8a43f3a5ab0eee71\\\"\",\n                       Key: \"example1.jpg\",\n                       LastModified: \"<Date Representation>\",\n                       Owner: {\n                          DisplayName: \"myname\",\n                          ID: \"12345example25102679df27bb0ae12b3f85be6f290b936c4393484be31bebcc\"\n                       },\n                       Size: 11,\n                       StorageClass: \"STANDARD\"\n                    },\n                    // {...}\n                ]\n            }\n            */\n        })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n\n    callback(null, { \"message\": \"Successfully executed merge\" });\n}",
+        "code": "let AWS = require('aws-sdk');\nlet SL_AWS = require('slappforge-sdk-aws');\nconst sqs = new SL_AWS.SQS(AWS);\n\nexports.handler = function (event, context, callback) {\n\n    sqs.receiveMessage({\n        QueueUrl: `https://sqs.${process.env.AWS_REGION}.amazonaws.com/${process.env.SIGMA_AWS_ACC_ID}/testind.fifo`,\n        AttributeNames: ['All'],\n        MaxNumberOfMessages: '1',\n        VisibilityTimeout: '30',\n        WaitTimeSeconds: '0'\n    }).promise()\n        .then(receivedMsgData => {\n            if (!!(receivedMsgData) && !!(receivedMsgData.Messages)) {\n                let receivedMessages = receivedMsgData.Messages;\n                receivedMessages.forEach(message => {\n                    // your logic to access each message through out the loop. Each message is available under variable message \n                    // within this block\n                });\n            } else {\n                // No messages to process\n            }\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n\n\n\n    callback(null, { \"message\": \"Successfully executed merge\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -72,15 +72,31 @@
           "mode": 0
         }
       },
-      "s3indunil1": {
-        "name": "s3indunil1",
-        "type": "S3",
+      "sqstestindfifo": {
+        "name": "sqstestindfifo",
+        "type": "SQS",
         "config": {
-          "mode": 1,
-          "bucket": {
-            "region": "us-east-1",
-            "name": "indunil1"
-          }
+          "mode": 0,
+          "existing": false,
+          "name": "testind.fifo",
+          "url": "https://sqs.us-east-1.amazonaws.com/318300609668/testind.fifo",
+          "selectedRegion": "us-east-1",
+          "deliveryDelay": 0,
+          "deliveryDelayUnit": "seconds",
+          "useRedrivePolicy": false,
+          "useSSE": false,
+          "kmsCustomerMasterKey": "default",
+          "accountId": "318300609668",
+          "dataKeyReusePeriod": 5,
+          "queueType": "fifoQueue",
+          "defaultVisibilityTimeout": 30,
+          "defaultVisibilityTimeoutUnit": "seconds",
+          "messageRetentionPeriod": 4,
+          "messageRetentionPeriodUnit": "days",
+          "maximumMessageSize": 256,
+          "receiveMessageWaitTime": 0,
+          "deadLetterQueueName": "",
+          "contentBasedDeduplication": false
         }
       }
     },
@@ -106,6 +122,13 @@
           "version": "2.176.0",
           "dev": true,
           "notRemovable": false
+        },
+        "slappforge-sdk-aws": {
+          "name": "slappforge-sdk-aws",
+          "language": "javascript",
+          "version": "0.0.5",
+          "dev": false,
+          "notRemovable": false
         }
       }
     }
@@ -117,7 +140,7 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1564050605739
+    "lastSave": 1564050900087
   },
   "VCS_STATE": {
     "provider": "GitHub",
