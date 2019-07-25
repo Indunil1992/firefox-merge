@@ -12,13 +12,11 @@ exports.handler = function (event, context, callback) {
         Message: {
             Body: {
                 Html: {
-                    Data: `<i>Italic text.</i> 
-<b>Bold text.</b> 
-<big>Big text.</big>`
+                    Data: `<i>Italic text.</i> <b>Bold text.</b> <big>Big text.</big>`
                 }
             },
             Subject: {
-                Data: 'test123'
+                Data: 'testaa'
             }
         },
         Source: 'indunil@adroitlogic.com'
