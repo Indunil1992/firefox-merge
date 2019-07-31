@@ -1,33 +1,23 @@
 let AWS = require('aws-sdk');
-const s3 = new AWS.S3();
+let SL_AWS = require('slappforge-sdk-aws');
+const sqs = new SL_AWS.SQS(AWS);
 
 exports.handler = function (event, context, callback) {
-    s3.putObject({
-        "Body": "test content",
-        "Bucket": "indunil1",
-        "Key": "1.jpg",
-        "ServerSideEncryption": "AES256",
-        "ACL": "public-read-write",
-        "Tagging": "tg1=tgV1&tg2=tgV2",
-        "Metadata": {
-            "mt1": "mtV1",
-            "mt2": "mtV2"
-        }
-    })
-        .promise()
-        .then(data => {
-            console.log(data);           // successful response
-            /*
-            data = {
-                ETag: "\"6805f2cfc46c0f04559748bb039d69ae\"",
-                VersionId: "pSKidl4pHBiNwukdbcPXAIs.sshFFOc0"
-            }
-            */
-        })
-        .catch(err => {
-            console.log(err, err.stack); // an error occurred
-        });
+
+    sqs.sendMessage({
+        MessageBody: '123',
+        QueueUrl: `https://sqs.${process.env.AWS_REGION}.amazonaws.com/${process.env.SIGMA_AWS_ACC_ID}/test.fifo`,
+        DelaySeconds: '0',
+        MessageDeduplicationId: '1',
+        MessageGroupId: '12',
+        MessageAttributes: {}
+    }, function (data) {
+        // your logic (logging etc) to handle successful message delivery, should be here
+    }, function (error) {
+        // your logic (logging etc) to handle failures, should be here
+    });
 
 
-    callback(null, { "message": "Successfully executed merge" });
+
+    callback(null, { "message": "Successfully executed 1.3.2" });
 }

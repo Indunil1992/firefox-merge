@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "firefox-merge/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nconst s3 = new AWS.S3();\n\nexports.handler = function (event, context, callback) {\n    s3.putObject({\n        \"Body\": \"test content\",\n        \"Bucket\": \"indunil1\",\n        \"Key\": \"1.jpg\",\n        \"ServerSideEncryption\": \"AES256\",\n        \"ACL\": \"public-read-write\",\n        \"Tagging\": \"tg1=tgV1&tg2=tgV2\",\n        \"Metadata\": {\n            \"mt1\": \"mtV1\",\n            \"mt2\": \"mtV2\"\n        }\n    })\n        .promise()\n        .then(data => {\n            console.log(data);           // successful response\n            /*\n            data = {\n                ETag: \"\\\"6805f2cfc46c0f04559748bb039d69ae\\\"\",\n                VersionId: \"pSKidl4pHBiNwukdbcPXAIs.sshFFOc0\"\n            }\n            */\n        })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n\n    callback(null, { \"message\": \"Successfully executed merge\" });\n}",
+        "code": "let AWS = require('aws-sdk');\nlet SL_AWS = require('slappforge-sdk-aws');\nconst sqs = new SL_AWS.SQS(AWS);\n\nexports.handler = function (event, context, callback) {\n\n    sqs.sendMessage({\n        MessageBody: '123',\n        QueueUrl: `https://sqs.${process.env.AWS_REGION}.amazonaws.com/${process.env.SIGMA_AWS_ACC_ID}/test.fifo`,\n        DelaySeconds: '0',\n        MessageDeduplicationId: '1',\n        MessageGroupId: '12',\n        MessageAttributes: {}\n    }, function (data) {\n        // your logic (logging etc) to handle successful message delivery, should be here\n    }, function (error) {\n        // your logic (logging etc) to handle failures, should be here\n    });\n\n\n\n    callback(null, { \"message\": \"Successfully executed 1.3.2\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -32,7 +32,7 @@
         },
         "triggers": [
           {
-            "resourceName": "apigusEast1testindunilmergetestinduany",
+            "resourceName": "apigusEast1sachithraAPInameqainduany",
             "config": {}
           }
         ],
@@ -53,52 +53,55 @@
     ],
     "currentFileId": "4503ebfb-0867-4e90-8572-11dd069a4cc5",
     "resources": {
-      "apigusEast1testindunilmergetestinduany": {
-        "name": "apigusEast1testindunilmergetestinduany",
+      "apigusEast1sachithraAPInameqainduany": {
+        "name": "apigusEast1sachithraAPInameqainduany",
         "type": "API_GATEWAY",
         "config": {
           "selectedRegion": "us-east-1",
-          "apiMode": 0,
-          "apiName": "testindunilmerge",
+          "apiMode": 1,
+          "apiName": "sachithraAPIname",
+          "apiId": "052p9kjn18",
           "endpointType": "REGIONAL",
+          "rootResourceId": "zrjp6rdv3b",
+          "existingResources": {
+            "/": "zrjp6rdv3b"
+          },
           "resourceMode": 0,
-          "resourceName": "test/indu",
-          "resourcePath": "/test/indu",
+          "resourceName": "qa/indu",
+          "resourcePath": "/qa/indu",
           "restMethod": "ANY",
           "proxyIntegration": false,
           "enableCORS": false,
           "stageMode": 0,
-          "stageName": "test",
-          "mode": 0
+          "stageName": "Test1",
+          "mode": 1
         }
       },
-      "ses-indunil@adroitlogic.com": {
-        "name": "ses-indunil@adroitlogic.com",
-        "type": "SES",
+      "sqstestfifo": {
+        "name": "sqstestfifo",
+        "type": "SQS",
         "config": {
-          "selectedIdentity": "indunil@adroitlogic.com",
-          "projectRegion": "us-east-1",
-          "params": {
-            "to": "indunil@adroitlogic.com",
-            "cc": "",
-            "bcc": "",
-            "subject": "vvv",
-            "body": {
-              "text": "hi\nhiiii\nhiiiiiiiiiiii",
-              "html": ""
-            }
-          }
-        }
-      },
-      "s3indunil1": {
-        "name": "s3indunil1",
-        "type": "S3",
-        "config": {
-          "mode": 1,
-          "bucket": {
-            "region": "us-east-1",
-            "name": "indunil1"
-          }
+          "mode": 0,
+          "existing": false,
+          "name": "test.fifo",
+          "url": "https://sqs.us-east-1.amazonaws.com/318300609668/test.fifo",
+          "selectedRegion": "us-east-1",
+          "deliveryDelay": 0,
+          "deliveryDelayUnit": "seconds",
+          "useRedrivePolicy": false,
+          "useSSE": false,
+          "kmsCustomerMasterKey": "default",
+          "accountId": "318300609668",
+          "dataKeyReusePeriod": 5,
+          "queueType": "fifoQueue",
+          "defaultVisibilityTimeout": 30,
+          "defaultVisibilityTimeoutUnit": "seconds",
+          "messageRetentionPeriod": 4,
+          "messageRetentionPeriodUnit": "days",
+          "maximumMessageSize": 256,
+          "receiveMessageWaitTime": 0,
+          "deadLetterQueueName": "",
+          "contentBasedDeduplication": false
         }
       }
     },
@@ -142,7 +145,7 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1564053232776
+    "lastSave": 1564554554373
   },
   "VCS_STATE": {
     "provider": "GitHub",
@@ -152,7 +155,7 @@
       "branches": [
         {
           "name": "master",
-          "hash": "cc47fbbe0ecb09d99a59677b5b06f16653bdfae1"
+          "hash": "f3a9c1f3753874dad41fbb7a3fec4edeaf026c5b"
         }
       ]
     }
