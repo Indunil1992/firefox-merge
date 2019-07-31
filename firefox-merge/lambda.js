@@ -12,22 +12,15 @@ exports.handler = function (event, context, callback) {
         Message: {
             Body: {
                 Html: {
-                    Data: `<p>
-      My Bonnie lies over the ocean.
-    
-      My Bonnie lies over the sea.
-    
-      My Bonnie lies over the ocean.
-    
-      Oh, bring back my Bonnie to me.
-    </p>`
+                    Data: `<p>This is a paragraph.</p>
+<p>This is another paragraph.</p>`
                 }
             },
             Subject: {
-                Data: 'test 31/7/2019'
+                Data: 'test 31/7/2019 prt 2'
             }
         },
-        Source: 'hirudinee+aws@adroitlogic.com',
+        Source: 'hirudinee+aws@adroitlogic.com'
     }, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         else console.log(data);           // successful response
