@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "firefox-merge/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nconst ses = new AWS.SES();\n\nexports.handler = function (event, context, callback) {\n\n    ses.sendEmail({\n        Destination: {\n            ToAddresses: ['indunil@adroitlogic.com'],\n            CcAddresses: [],\n            BccAddresses: []\n        },\n        Message: {\n            Body: {\n                Html: {\n                    Data: `<p>This is a paragraph.</p>\n<p>This is another paragraph.</p>`\n                }\n            },\n            Subject: {\n                Data: 'test 31/7/2019 prt 2'\n            }\n        },\n        Source: 'hirudinee+aws@adroitlogic.com'\n    }, function (err, data) {\n        if (err) console.log(err, err.stack); // an error occurred\n        else console.log(data);           // successful response\n    });\n\n\n    callback(null, { \"message\": \"Successfully executed 1.3.2\" });\n}",
+        "code": "let AWS = require('aws-sdk');\nconst sns = new AWS.SNS();\n\nexports.handler = function (event, context, callback) {\n\n    sns.publish({\n        Message: 'vvvvv',\n        Subject: 'vv',\n        MessageAttributes: {},\n        MessageStructure: 'String',\n        TopicArn: 'arn:aws:sns:us-east-1:318300609668:rr'\n    }).promise()\n        .then(data => {\n            // your code goes here\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n\n\n    callback(null, { \"message\": \"Successfully executed 1.3.2\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -94,6 +94,19 @@
             }
           }
         }
+      },
+      "snsusEast1rr": {
+        "name": "snsusEast1rr",
+        "type": "SNS",
+        "config": {
+          "topicMode": 0,
+          "topicName": "rr",
+          "topicArn": "arn:aws:sns:us-east-1:318300609668:rr",
+          "topicRegion": "us-east-1",
+          "snsType": 0,
+          "topicDisplayName": "tt",
+          "subscriptions": []
+        }
       }
     },
     "customTemplate": {
@@ -136,7 +149,7 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1564555401169
+    "lastSave": 1564555569680
   },
   "VCS_STATE": {
     "provider": "GitHub",
@@ -146,7 +159,7 @@
       "branches": [
         {
           "name": "master",
-          "hash": "88b16334ecede24df2af749289f701dbf7668e3e"
+          "hash": "25d330f3d11af26c43a8bb3f42f48c0a3899fe67"
         }
       ]
     }
