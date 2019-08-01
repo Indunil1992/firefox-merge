@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "firefox-merge/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nconst ses = new AWS.SES();\n\nexports.handler = function (event, context, callback) {\n\n    ses.sendEmail({\n        Destination: {\n            ToAddresses: ['indunil@adroitlogic.com'],\n            CcAddresses: [],\n            BccAddresses: []\n        },\n        Message: {\n            Body: {\n                Html: {\n                    Data: `<pre>\n      My Bonnie lies over the ocean.\n    \n      My Bonnie lies over the sea.\n    \n      My Bonnie lies over the ocean.\n    \n      Oh, bring back my Bonnie to me.\n    </pre>\n    `\n                }\n            },\n            Subject: {\n                Data: '1/8/2019'\n            }\n        },\n        Source: 'indunil@adroitlogic.com',\n    }, function (err, data) {\n        if (err) console.log(err, err.stack); // an error occurred\n        else console.log(data);           // successful response\n    });\n\n    callback(null, { \"message\": \"Successfully executed 1.3.2\" });\n}",
+        "code": "let AWS = require('aws-sdk');\nconst kinesis = new AWS.Kinesis();\n\n\nexports.handler = function (event, context, callback) {\n\n    kinesis.putRecord({\n        Data: '1',\n        PartitionKey: '1',\n        StreamName: 'testindunil'\n    }).promise()\n        .then(data => {\n            // your logic goes here\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n\n\n\n    callback(null, { \"message\": \"Successfully executed 1.3.2\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -125,6 +125,17 @@
             }
           }
         }
+      },
+      "kinesistestindunil": {
+        "name": "kinesistestindunil",
+        "type": "Kinesis",
+        "config": {
+          "mode": 0,
+          "StreamName": "testindunil",
+          "shards": 1,
+          "region": "us-east-1",
+          "operation": "put-record"
+        }
       }
     },
     "customTemplate": {
@@ -167,7 +178,7 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1564633870011
+    "lastSave": 1564637140230
   },
   "VCS_STATE": {
     "provider": "GitHub",
@@ -177,7 +188,7 @@
       "branches": [
         {
           "name": "master",
-          "hash": "da9d6421a87e9de2add8f187e8fb1aea87251d43"
+          "hash": "649ff6c70661814957cd015374cd93791dad5d79"
         }
       ]
     }

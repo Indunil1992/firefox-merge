@@ -1,38 +1,22 @@
 let AWS = require('aws-sdk');
-const ses = new AWS.SES();
+const kinesis = new AWS.Kinesis();
+
 
 exports.handler = function (event, context, callback) {
 
-    ses.sendEmail({
-        Destination: {
-            ToAddresses: ['indunil@adroitlogic.com'],
-            CcAddresses: [],
-            BccAddresses: []
-        },
-        Message: {
-            Body: {
-                Html: {
-                    Data: `<pre>
-      My Bonnie lies over the ocean.
-    
-      My Bonnie lies over the sea.
-    
-      My Bonnie lies over the ocean.
-    
-      Oh, bring back my Bonnie to me.
-    </pre>
-    `
-                }
-            },
-            Subject: {
-                Data: '1/8/2019'
-            }
-        },
-        Source: 'indunil@adroitlogic.com',
-    }, function (err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data);           // successful response
-    });
+    kinesis.putRecord({
+        Data: '1',
+        PartitionKey: '1',
+        StreamName: 'testindunil'
+    }).promise()
+        .then(data => {
+            // your logic goes here
+        })
+        .catch(err => {
+            // error handling goes here
+        });
+
+
 
     callback(null, { "message": "Successfully executed 1.3.2" });
 }
